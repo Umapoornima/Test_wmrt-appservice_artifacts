@@ -29,11 +29,6 @@ jobs:
           git clone https://${{ secrets.VIZIAPPS_TOKEN }}@github.com/${{ env.VIZIAPPS_REPO }} repo-a
           cp repo-a/${{ env.FILE_NAME }} .
 
-      - name: Configure Git identity
-        run: |
-          git config --global user.name "actions-user"
-          git config --global user.email "action@github.com"
-
       - name: Push artifact to Personal repo with workflow file preserved
         run: |
           git lfs track "${{ env.FILE_NAME }}"
