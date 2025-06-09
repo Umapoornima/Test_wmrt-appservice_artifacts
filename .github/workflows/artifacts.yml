@@ -5,7 +5,7 @@ on:
 
 env:
   VIZIAPPS_REPO: ViziApps/wmrt-appservice_artifacts
-  PERSONAL_REPO: Umapoornima/wmrt-appservice_artifacts
+  PERSONAL_REPO: Umapoornima/Test_wmrt-appservice_artifacts
   FILE_NAME: appservice_artifacts.zip
 
 jobs:
@@ -31,9 +31,11 @@ jobs:
 
       - name: Push artifact to Personal repo with workflow file preserved
         run: |
-          
           git lfs track "${{ env.FILE_NAME }}"
           git add -f .gitattributes
           git add "${{ env.FILE_NAME }}"
-          git commit -m "Imported ZIP from ViziApps using Git LFS" || echo "Nothing to commit"
-          git push --force origin main
+
+          DATE=$(date +'%Y-%m-%d')
+          git commit -m "Imported ZIP from ViziApps using Git LFS on $DATE" || echo "Nothing to commit"
+          
+          git push origin main
