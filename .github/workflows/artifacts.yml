@@ -1,39 +1,38 @@
 name: Transfer Artifact
-
+ 
 on:
   workflow_dispatch:
-
+ 
 env:
   VIZIAPPS_REPO: ViziApps/wmrt-appservice_artifacts
   PERSONAL_REPO: Umapoornima/Test_wmrt-appservice_artifacts
   FILE_NAME: appservice_artifacts.zip
-
+ 
 jobs:
   transfer:
     runs-on: ubuntu-latest
-
+ 
     steps:
       - name: Checkout Personal Repo
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.PERSONAL_TOKEN }}
-
+ 
       - name: Install Git LFS
         run: |
           sudo apt-get update
           sudo apt-get install git-lfs
           git lfs install
-
+ 
       - name: Clone from ViziApps repo using VIZIAPPS_TOKEN
         run: |
           git clone https://${{ secrets.VIZIAPPS_TOKEN }}@github.com/${{ env.VIZIAPPS_REPO }} repo-a
           cp repo-a/${{ env.FILE_NAME }} .
-
+ 
       - name: Push artifact to Personal repo with workflow file preserved
         run: |
           git lfs track "${{ env.FILE_NAME }}"
           git add -f .gitattributes
           git add "${{ env.FILE_NAME }}"
-          export DATE=$(date '+%Y-%m-%d %H:%M:%S')
-          git commit -m "Imported ZIP from ViziApps using Git LFS on $DATE" --allow-empty
+          git commit -m "Imported ZIP from ViziApps using Git LFS" || echo "Nothing to commit"
           git push origin main
