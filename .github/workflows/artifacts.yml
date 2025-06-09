@@ -34,5 +34,6 @@ jobs:
           git lfs track "${{ env.FILE_NAME }}"
           git add -f .gitattributes
           git add "${{ env.FILE_NAME }}"
-          git commit -m "Imported ZIP from ViziApps using Git LFS on $(date '+%Y-%m-%d %H:%M:%S')" || echo "Nothing to commit"
+          DATE=$(date '+%Y-%m-%d %H:%M:%S')
+          git commit -m "Imported ZIP from ViziApps using Git LFS on $DATE" || echo "Nothing to commit"
           git push origin main
