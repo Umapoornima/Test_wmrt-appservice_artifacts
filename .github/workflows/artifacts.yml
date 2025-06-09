@@ -7,7 +7,6 @@ env:
   VIZIAPPS_REPO: ViziApps/wmrt-appservice_artifacts
   PERSONAL_REPO: Umapoornima/Test_wmrt-appservice_artifacts
   FILE_NAME: appservice_artifacts.zip
-  DATE: (date +'%d-%m-%Y')
 
 jobs:
   transfer:
@@ -22,7 +21,7 @@ jobs:
       - name: Install Git LFS
         run: |
           sudo apt-get update
-          sudo apt-get install git-lfs
+          sudo apt-get install -y git-lfs
           git lfs install
 
       - name: Clone from ViziApps repo using VIZIAPPS_TOKEN
@@ -30,11 +29,20 @@ jobs:
           git clone https://${{ secrets.VIZIAPPS_TOKEN }}@github.com/${{ env.VIZIAPPS_REPO }} repo-a
           cp repo-a/${{ env.FILE_NAME }} .
 
+      - name: Configure Git User
+        run: |
+          git config user.name "GitHub Action Bot"
+          git config user.email "action@github.com"
+
       - name: Push artifact to Personal repo with workflow file preserved
         run: |
           git lfs track "${{ env.FILE_NAME }}"
           git add -f .gitattributes
           git add "${{ env.FILE_NAME }}"
-
-          git commit -m "Imported ZIP from ViziApps using Git LFS on $(date '+%Y-%m-%d %H:%M:%S')" || echo "Nothing to commit"
-          git push origin main
+          
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -m "Imported ZIP from ViziApps using Git LFS on $(date '+%Y-%m-%d %H:%M:%S')"
+            git push origin main
+          fi
