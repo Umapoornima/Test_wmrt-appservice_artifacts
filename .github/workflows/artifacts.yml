@@ -30,9 +30,10 @@ jobs:
           cp repo-a/${{ env.FILE_NAME }} .
  
       - name: Push artifact to Personal repo with workflow file preserved
-        run: |
-          git lfs track "${{ env.FILE_NAME }}"
-          git add -f .gitattributes
-          git add "${{ env.FILE_NAME }}"
-          git commit -m "Imported ZIP from ViziApps using Git LFS" || echo "Nothing to commit"
-          git push origin main
+        run: |
+          git lfs track "${{ env.FILE_NAME }}"
+          git add -f .gitattributes
+          git add "${{ env.FILE_NAME }}"
+          export DATE=$(date '+%Y-%m-%d %H:%M:%S')
+          git commit -m "Imported ZIP from ViziApps using Git LFS on $DATE" --allow-empty
+          git push origin main
