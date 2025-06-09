@@ -1,4 +1,4 @@
-name: Test Transfer Artifact
+name: Transfer Artifact
 
 on:
   workflow_dispatch:
