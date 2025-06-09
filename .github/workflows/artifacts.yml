@@ -35,7 +35,7 @@ jobs:
           git add -f .gitattributes
           git add "${{ env.FILE_NAME }}"
 
-          DATE=$(date +'%Y-%m-%d')
-          git commit -m "Imported ZIP from ViziApps using Git LFS on $DATE" || echo "Nothing to commit"
+          DATE=$(date +'%d-%m-%Y')
+          git commit -m "Imported ZIP from ViziApps using Git LFS \"$DATE\"" || echo "Nothing to commit"
           
           git push origin main
